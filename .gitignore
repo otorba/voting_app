@@ -1,6 +1,50 @@
-bin/
-obj/
+[Bb]in/
+[Oo]bj/
 /packages/
-riderModule.iml
-/_ReSharper.Caches/
+*.iml
+_ReSharper.Caches/
 .idea/
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# Visual Studio (if ever opened there)
+.vs/
+
+# Build results
+[Bb]uild[Ll]og.*
+
+# Publish output
+**/publish/
+
+# User-specific files
+*.user
+*.suo
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+artifacts/
+
+# ASP.NET Core config overrides
+appsettings.*.local.json
+
+# Logs
+*.log
+
+# Blazor / web tooling
+**/node_modules/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+**/.pnp.*
+**/.parcel-cache/
+**/.turbo/
+**/dist/
+**/build/
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/**/*.map

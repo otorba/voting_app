@@ -1,7 +1,39 @@
 ﻿@page "/"
 
+@code {
+
+    private void ClickOnDog()
+    {
+        // send a request to redis to increment the dog counter
+    }
+
+    private void ClickOnCat()
+    {
+        // send a request to redis to increment the cat counter
+    }
+
+}
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="voting-container">
+    <button class="btn btn-dark voting-button" @onclick="ClickOnDog">Dog</button>
+    <button class="btn btn-light voting-button" @onclick="ClickOnCat">Cat</button>
+</div>
 
-Welcome to your new app.
+<style>
+    .voting-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        gap: 20px;
+    }
+
+    .voting-button {
+        width: 200px;
+        height: 60px;
+        font-size: 18px;
+    }
+</style>

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: votingapp-deployment
+  labels:
+    app: votingapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: votingapp
+  template:
+    metadata:
+      labels:
+        app: votingapp
+    spec:
+      containers:
+        - name: votingapp
+          image: votingapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080

@@ -1,15 +1,18 @@
-# Build the Blazor WebAssembly assets
+# Build the combined server + WebAssembly app
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY VotingApp/VotingApp.csproj VotingApp/
-RUN dotnet restore VotingApp/VotingApp.csproj
-COPY VotingApp/ VotingApp/
-RUN dotnet publish VotingApp/VotingApp.csproj -c Release -o /app/publish
 
-# Serve the published assets with nginx on port 8080
-FROM nginx:1.27-alpine AS final
-WORKDIR /usr/share/nginx/html
-COPY --from=build /app/publish/wwwroot ./
-COPY VotingApp/nginx.conf /etc/nginx/conf.d/default.conf
+COPY VotingApp.Server/VotingApp.Server.csproj VotingApp.Server/
+COPY VotingApp/VotingApp.csproj VotingApp/
+RUN dotnet restore VotingApp.Server/VotingApp.Server.csproj
+
+COPY VotingApp.Server/ VotingApp.Server/
+COPY VotingApp/ VotingApp/
+RUN dotnet publish VotingApp.Server/VotingApp.Server.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+# Run the ASP.NET Core server hosting the Blazor client and API
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish .
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["dotnet", "VotingApp.Server.dll"]

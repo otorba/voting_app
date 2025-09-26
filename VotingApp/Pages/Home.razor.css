@@ -1,0 +1,14 @@
+.voting-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 20px;
+}
+
+.voting-button {
+    width: 200px;
+    height: 60px;
+    font-size: 18px;
+}

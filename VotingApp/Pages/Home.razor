@@ -1,22 +1,45 @@
 ﻿@page "/"
 
-@code {
-
-    private void ClickOnDog()
-    {
-        // send a request to redis to increment the dog counter
-    }
-
-    private void ClickOnCat()
-    {
-        // send a request to redis to increment the cat counter
-    }
-
-}
+@inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
 
 <div class="voting-container">
-    <button class="btn btn-dark voting-button" @onclick="ClickOnDog">Dog</button>
-    <button class="btn btn-light voting-button" @onclick="ClickOnCat">Cat</button>
+    <button class="btn btn-dark voting-button" disabled="@_isSubmitting" @onclick="ClickOnDog">Dog</button>
+    <button class="btn btn-light voting-button" disabled="@_isSubmitting" @onclick="ClickOnCat">Cat</button>
 </div>
+
+@code {
+    private bool _isSubmitting;
+
+    private async Task ClickOnDog()
+    {
+        await SubmitVote("dog");
+    }
+
+    private async Task ClickOnCat()
+    {
+        await SubmitVote("cat");
+    }
+
+    private async Task SubmitVote(string animal)
+    {
+        if (_isSubmitting)
+        {
+            return;
+        }
+
+        try
+        {
+            _isSubmitting = true;
+            StateHasChanged();
+            await Http.PostAsync($"api/vote/{animal}", JsonContent.Create(animal));
+        }
+        finally
+        {
+            _isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+}

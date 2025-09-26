@@ -1,0 +1,101 @@
+@page "/"
+@using System.Globalization
+
+@inject HttpClient Http
+
+<PageTitle>Voting Results</PageTitle>
+
+@if (_isLoading)
+{
+    <div class="status-message">Loading vote counts…</div>
+}
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="status-message error">@_errorMessage</div>
+}
+else
+{
+    <main class="results-wrapper">
+        <section class="vote-panel dog" style="@GetFlexStyle(_dogVotes, _catVotes)">
+            <h2 class="panel-title">Dog</h2>
+            <div class="vote-count">@_dogVotes</div>
+            <div class="vote-label">votes</div>
+        </section>
+        <section class="vote-panel cat" style="@GetFlexStyle(_catVotes, _dogVotes)">
+            <h2 class="panel-title">Cat</h2>
+            <div class="vote-count">@_catVotes</div>
+            <div class="vote-label">votes</div>
+        </section>
+    </main>
+}
+
+@code {
+    private const string VoteEndpoint = "api/votes";
+
+    private bool _isLoading = true;
+    private string? _errorMessage;
+    private int _dogVotes;
+    private int _catVotes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var voteTotals = await Http.GetFromJsonAsync<Dictionary<string, int>>(VoteEndpoint).ConfigureAwait(false);
+
+            if (voteTotals is null || voteTotals.Count == 0)
+            {
+                _errorMessage = "Vote data is not available yet.";
+                return;
+            }
+
+            _dogVotes = GetVoteCount(voteTotals, "dog");
+            _catVotes = GetVoteCount(voteTotals, "cat");
+        }
+        catch (HttpRequestException)
+        {
+            _errorMessage = "Unable to reach the vote service.";
+        }
+        catch (NotSupportedException)
+        {
+            _errorMessage = "Unexpected vote data format returned by the server.";
+        }
+        catch (Exception)
+        {
+            _errorMessage = "An unexpected error occurred while loading votes.";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private static int GetVoteCount(Dictionary<string, int> voteTotals, string key)
+    {
+        foreach (var entry in voteTotals)
+        {
+            if (string.Equals(entry.Key, key, StringComparison.OrdinalIgnoreCase))
+            {
+                return entry.Value;
+            }
+        }
+
+        return 0;
+    }
+
+    private static string GetFlexStyle(int votes, int otherVotes)
+    {
+        if (votes <= 0 && otherVotes <= 0)
+        {
+            return "flex: 1 1 0%";
+        }
+
+        var total = votes + otherVotes;
+        var ratio = total == 0 ? 0.5 : (double)votes / total;
+        var clampedRatio = Math.Clamp(ratio, 0.2, 1);
+        var formatted = clampedRatio.ToString("0.###", CultureInfo.InvariantCulture);
+
+        return $"flex: {formatted} 1 0%";
+    }
+
+}

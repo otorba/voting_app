@@ -1,0 +1,325 @@
+# EditorConfig is awesome: https://EditorConfig.org
+root = true
+
+[*]
+indent_style = space
+trim_trailing_whitespace = true
+# (Please don't specify an indent_size here; that has too many unintended consequences).
+
+[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+indent_size = 2
+
+[*.json]
+indent_size = 2
+
+[*.ps1]
+indent_size = 2
+
+[*.sh]
+indent_size = 2
+end_of_line = lf
+
+[*.{cs,csx}]
+indent_size = 2
+max_line_length = 130
+
+[*generated.cs]
+generated_code = true
+
+[*.cs]
+# Plarium diagnostics
+dotnet_diagnostic.PL0012.severity = none
+dotnet_diagnostic.MsgPack015.severity = none
+
+# Blank lines (https://www.jetbrains.com/help/rider/EditorConfig_CSHARP_BlankLinesPageScheme.html).
+csharp_blank_lines_around_region = 1
+csharp_blank_lines_inside_region = 1
+csharp_blank_lines_before_single_line_comment = 1
+csharp_keep_blank_lines_in_declarations = 1
+csharp_remove_blank_lines_near_braces_in_declarations = true
+csharp_blank_lines_after_start_comment = 0
+csharp_blank_lines_between_using_groups = 0
+csharp_blank_lines_after_using_list = 1
+csharp_blank_lines_around_namespace = 1
+csharp_blank_lines_inside_namespace = 0
+csharp_blank_lines_around_type = 1
+csharp_blank_lines_inside_type = 0
+csharp_blank_lines_around_field = 1
+csharp_blank_lines_around_single_line_field = 0
+csharp_blank_lines_around_property = 1
+csharp_blank_lines_around_single_line_property = 0
+csharp_blank_lines_around_auto_property = 1
+csharp_blank_lines_around_single_line_auto_property = 0
+csharp_blank_lines_around_invocable = 1
+csharp_blank_lines_around_single_line_invocable = 0
+csharp_keep_blank_lines_in_code = 1
+csharp_remove_blank_lines_near_braces_in_code = true
+csharp_blank_lines_around_local_method = 1
+csharp_blank_lines_around_single_line_local_method = 0
+csharp_blank_lines_before_control_transfer_statements = 0
+csharp_blank_lines_after_control_transfer_statements = 1
+csharp_blank_lines_before_block_statements = 0
+csharp_blank_lines_after_block_statements = 1
+csharp_blank_lines_before_multiline_statements = 0
+csharp_blank_lines_after_multiline_statements = 1
+csharp_blank_lines_around_block_case_section = 1
+csharp_blank_lines_around_multiline_case_section = 1
+csharp_blank_lines_before_case = 0
+csharp_blank_lines_after_case = 0
+
+# Braces (https://www.jetbrains.com/help/rider/EditorConfig_CSHARP_BracesPageSchema.html).
+csharp_brace_style = next_line
+csharp_indent_inside_namespace = true
+csharp_use_continuous_indent_inside_initializer_braces = true
+csharp_allow_comment_after_lbrace = false
+csharp_empty_block_style = together_same_line
+
+# Code (https://www.jetbrains.com/help/rider/EditorConfig_CSHARP_CSharpCodeStylePageImplSchema.html).
+csharp_for_built_in_types = use_var
+csharp_for_simple_types = use_var
+csharp_for_other_types = use_var
+csharp_use_roslyn_logic_for_evident_types = true
+csharp_prefer_separate_deconstructed_variables_declaration = false # Prefer `var (x, y) = (1, 2)` instead of `(var x, var y) = (1, 2)`.
+csharp_prefer_explicit_discard_declaration = true
+csharp_instance_members_qualify_members = none
+csharp_instance_members_qualify_declared_in = this_class # Probably won't work.
+csharp_static_members_qualify_with = none # There is already a rule for that, not needed.
+csharp_static_members_qualify_members = none
+csharp_builtin_type_reference_style = use_keyword
+csharp_builtin_type_reference_for_member_access_style = use_keyword
+csharp_prefer_qualified_reference = false
+csharp_add_imports_to_deepest_scope = false
+csharp_sort_usings_with_system_first = true
+csharp_qualified_using_at_nested_scope = true
+csharp_allow_alias = true
+csharp_can_use_global_alias = false
+csharp_default_private_modifier = explicit
+csharp_default_internal_modifier = explicit
+csharp_parentheses_redundancy_style = remove_if_not_clarifies_precedence
+csharp_braces_for_ifelse = not_required_for_both
+csharp_braces_for_for = not_required
+csharp_braces_for_foreach = not_required
+csharp_braces_for_while = not_required
+csharp_braces_for_dowhile = not_required
+csharp_braces_for_using = not_required
+csharp_braces_for_lock = not_required
+csharp_braces_for_fixed = not_required
+csharp_method_or_operator_body = expression_body
+resharper_local_function_body = expression_body
+csharp_local_function__body = expression_body
+csharp_constructor_or_destructor_body = expression_body
+csharp_accessor_owner_body = expression_body
+csharp_use_heuristics_for_body_style = false
+csharp_trailing_comma_in_multiline_lists = true
+csharp_trailing_comma_in_singleline_lists = false
+csharp_object_creation_when_type_evident = target_typed
+csharp_object_creation_when_type_not_evident = target_typed
+csharp_default_value_when_type_evident = default_literal
+csharp_default_value_when_type_not_evident = default_literal
+csharp_arguments_literal = named
+csharp_arguments_string_literal = named
+csharp_namespace_body = file_scoped
+csharp_force_attribute_style = separate
+
+# Tabs, Indents, Alignment (https://www.jetbrains.com/help/resharper/EditorConfig_CSHARP_CSharpIndentStylePageSchema.html).
+csharp_continuous_indent_multiplier = 1
+csharp_indent_nested_usings_stmt = false
+csharp_indent_nested_fixed_stmt = false
+csharp_indent_nested_lock_stmt = false
+csharp_indent_nested_for_stmt = false
+csharp_indent_nested_foreach_stmt = false
+csharp_indent_nested_while_stmt = false
+csharp_use_continuous_indent_inside_parens = true
+csharp_indent_method_decl_pars = inside
+csharp_indent_invocation_pars = inside
+csharp_indent_statement_pars = inside
+csharp_indent_typeparam_angles = inside
+csharp_indent_typearg_angles = inside
+csharp_indent_pars = inside
+csharp_indent_preprocessor_if = no_indent
+csharp_indent_preprocessor_region = usual_indent
+csharp_indent_preprocessor_other = no_indent
+csharp_indent_switch_labels = true
+csharp_indent_type_constraints = true
+csharp_stick_comment = false
+csharp_place_comments_at_first_column = false
+csharp_use_indent_from_previous_element = true
+csharp_align_multiline_parameter = false
+csharp_align_multiline_extends_list = false
+csharp_align_linq_query = false
+csharp_align_multiline_binary_expressions_chain = false
+csharp_outdent_binary_ops = false
+csharp_align_multiline_calls_chain = false
+csharp_outdent_dots = false
+csharp_align_multiline_array_and_object_initializer = false
+csharp_align_multiline_switch_expression = false
+csharp_indent_anonymous_method_block = false
+csharp_align_first_arg_by_paren = false
+csharp_align_multiline_argument = false
+csharp_align_tuple_components = false
+csharp_align_multiline_expression = false
+csharp_align_multiline_for_stmt = false
+csharp_align_multiple_declaration = false
+csharp_align_multline_type_parameter_list = false
+csharp_align_multline_type_parameter_constrains = false
+csharp_outdent_commas = false
+csharp_int_align = false
+csharp_indent_braces_inside_statement_conditions = false
+csharp_align_multiline_property_pattern = false
+csharp_align_multiline_list_pattern = false
+csharp_align_multiline_binary_patterns = false
+csharp_outdent_binary_pattern_ops = false
+csharp_align_multiline_statement_conditions = false
+
+# Line breaks (https://www.jetbrains.com/help/resharper/EditorConfig_CSHARP_LineBreaksPageSchema.html).
+csharp_keep_existing_linebreaks = true
+csharp_keep_existing_arrangement = false
+csharp_keep_user_linebreaks = true
+csharp_wrap_before_comma = false
+csharp_special_else_if_treatment = true
+csharp_place_type_attribute_on_same_line = never
+csharp_place_method_attribute_on_same_line = if_owner_is_single_line
+csharp_place_accessorholder_attribute_on_same_line = if_owner_is_single_line
+csharp_place_accessor_attribute_on_same_line = if_owner_is_single_line
+csharp_place_field_attribute_on_same_line = if_owner_is_single_line
+csharp_wrap_parameters_style = chop_if_long
+csharp_wrap_before_declaration_lpar = false
+csharp_wrap_after_declaration_lpar = true
+csharp_wrap_before_declaration_rpar = false
+csharp_place_constructor_initializer_on_same_line = true
+csharp_place_expr_method_on_single_line = if_owner_is_single_line
+csharp_place_expr_property_on_single_line = if_owner_is_single_line
+csharp_place_expr_accessor_on_single_line = if_owner_is_single_line
+csharp_wrap_before_arrow_with_expressions = false
+csharp_place_type_constraints_on_same_line = true
+csharp_wrap_before_first_type_parameter_constraint = true
+csharp_wrap_multiple_type_parameter_constraints_style = chop_if_long
+csharp_wrap_before_type_parameter_langle = false
+csharp_wrap_before_extends_colon = false
+csharp_wrap_extends_list_style = chop_if_long
+csharp_place_abstract_accessorholder_on_single_line = true
+csharp_place_simple_accessorholder_on_single_line = false
+csharp_place_accessor_with_attrs_holder_on_single_line = false
+csharp_place_simple_accessor_on_single_line = true
+csharp_place_simple_method_on_single_line = true
+csharp_max_enum_members_on_line = 1
+csharp_place_simple_enum_on_single_line = false
+csharp_wrap_enum_declaration = chop_always
+csharp_new_line_before_else = true
+csharp_new_line_before_while = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_wrap_for_stmt_header_style = chop_if_long
+csharp_wrap_multiple_declaration_style = chop_if_long
+csharp_place_simple_embedded_statement_on_same_line = never
+csharp_place_simple_case_statement_on_same_line = never
+csharp_place_simple_embedded_block_on_same_line = false
+csharp_place_simple_anonymousmethod_on_single_line = true
+csharp_place_simple_switch_expression_on_single_line = false
+csharp_wrap_switch_expression = chop_always
+csharp_place_simple_initializer_on_single_line = true
+csharp_wrap_object_and_collection_initializer_style = chop_if_long
+csharp_wrap_array_initializer_style = chop_if_long
+csharp_wrap_arguments_style = chop_if_long
+csharp_wrap_before_invocation_lpar = false
+csharp_wrap_after_invocation_lpar = false
+csharp_wrap_before_invocation_rpar = false
+csharp_wrap_after_dot_in_method_calls = false
+csharp_wrap_chained_method_calls = chop_if_long
+csharp_wrap_before_binary_opsign = true
+csharp_wrap_chained_binary_expressions = chop_if_long
+csharp_force_chop_compound_if_expression = false
+csharp_force_chop_compound_while_expression = false
+csharp_force_chop_compound_do_expression = false
+csharp_wrap_before_ternary_opsigns = true
+csharp_wrap_ternary_expr_style = chop_if_long
+csharp_nested_ternary_style = compact
+csharp_wrap_linq_expressions = chop_always
+csharp_wrap_before_linq_expression = false
+csharp_place_linq_into_on_new_line = false
+csharp_wrap_verbatim_interpolated_strings = no_wrap
+csharp_wrap_before_eq = false
+csharp_place_simple_blocks_on_single_line = true
+csharp_place_simple_property_pattern_on_single_line = true
+csharp_wrap_property_pattern = chop_if_long
+csharp_place_simple_list_pattern_on_single_line = true
+csharp_wrap_list_pattern = chop_if_long
+csharp_wrap_before_binary_pattern_op = true
+csharp_wrap_chained_binary_patterns = chop_if_long
+
+# Spaces (https://www.jetbrains.com/help/resharper/EditorConfig_CSHARP_SpacesPageSchema.html).
+csharp_extra_spaces = remove_all
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_before_typeof_parentheses = false
+csharp_space_before_default_parentheses = false
+csharp_space_before_checked_parentheses = false
+csharp_space_before_sizeof_parentheses = false
+csharp_space_before_nameof_parentheses = false
+csharp_space_between_keyword_and_expression = true
+csharp_space_between_keyword_and_type = true
+csharp_space_between_parentheses_of_control_flow_statements = false
+csharp_space_within_parentheses = false
+csharp_space_between_typecast_parentheses = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_within_typeof_parentheses = false
+csharp_space_within_default_parentheses = false
+csharp_space_within_checked_parentheses = false
+csharp_space_within_sizeof_parenthese = false
+csharp_space_within_nameof_parentheses = false
+csharp_space_before_open_square_brackets = false
+csharp_space_between_square_brackets = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_before_type_parameter_angle = false
+csharp_space_before_type_argument_angle = false
+csharp_space_within_type_parameter_angles = false
+csharp_space_within_type_argument_angles = false
+csharp_space_before_singleline_accessorholder = true
+csharp_space_in_singleline_accessorholder = true
+csharp_space_between_accessors_in_singleline_property = true
+csharp_space_within_empty_braces = true
+csharp_space_in_singleline_method = true
+csharp_space_in_singleline_anonymous_method = true
+csharp_space_within_single_line_array_initializer_braces = true
+csharp_space_around_binary_operator = before_and_after
+csharp_space_around_arrow_op = false
+csharp_space_after_unary_operator = false
+csharp_space_near_postfix_and_prefix_op = false
+csharp_space_around_ternary_operator = true
+csharp_space_before_comma = false
+csharp_space_after_comma = true
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_before_type_parameter_constraint_colon = true
+csharp_space_after_type_parameter_constraint_colon = true
+csharp_space_before_colon_in_case = false
+csharp_space_after_colon_in_case = true
+csharp_space_before_colon = false
+csharp_space_after_colon = true
+csharp_space_between_attribute_sections = true
+csharp_space_after_attribute = true
+csharp_space_after_cast = true
+csharp_space_around_dot = false
+csharp_space_around_lambda_arrow = true
+csharp_space_before_pointer_asterik_declaration = false
+csharp_space_before_nullable_mark = false
+csharp_space_around_alias_eq = true
+csharp_space_before_trailing_comment = true
+csharp_space_after_operator_keyword = true
+
+# .NET Rules.
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_constructors = true:suggestion
+csharp_style_expression_bodied_operators = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+
+resharper_partial_type_with_single_part_highlighting = none
+resharper_partial_method_with_single_part_highlighting = none

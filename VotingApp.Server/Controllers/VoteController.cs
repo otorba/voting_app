@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using VotingApp.Server.Options;
+using VotingApp.Shared;
 
 namespace VotingApp.Server.Controllers;
 
@@ -12,10 +13,13 @@ public class VoteController(
   IConnectionMultiplexer connection,
   ILogger<VoteController> logger) : ControllerBase
 {
-  [HttpPost(template: "{animal}")]
-  public async Task<IActionResult> PostVote(string animal)
+  [HttpPost]
+  public async Task<IActionResult> PostVote([FromBody] VoteRequest? request)
   {
-    if (!TryNormalizeAnimal(animal, out var normalizedAnimal))
+    if (request is null)
+      return BadRequest(new { error = "Request body is required." });
+
+    if (!TryNormalizeAnimal(request.Animal, out var normalizedAnimal))
       return BadRequest(new { error = "Animal must be 'dog' or 'cat'." });
 
     var options = redisOptions.Value;
@@ -30,14 +34,15 @@ public class VoteController(
     return Accepted($"/api/Vote/{normalizedAnimal}");
   }
 
-  private static bool TryNormalizeAnimal(string value, out string normalized)
+  private static bool TryNormalizeAnimal(Animal animal, out string normalized)
   {
-    normalized = string.Empty;
+    normalized = animal switch
+    {
+      Animal.Dog => "dog",
+      Animal.Cat => "cat",
+      var _ => string.Empty,
+    };
 
-    if (string.IsNullOrWhiteSpace(value))
-      return false;
-
-    normalized = value.Trim().ToLowerInvariant();
-    return normalized is "dog" or "cat";
+    return normalized.Length > 0;
   }
 }

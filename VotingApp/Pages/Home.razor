@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using VotingApp.Shared
 
 @inject HttpClient Http
 
@@ -14,15 +15,15 @@
 
     private async Task ClickOnDog()
     {
-        await SubmitVote("dog");
+        await SubmitVote(Animal.Dog);
     }
 
     private async Task ClickOnCat()
     {
-        await SubmitVote("cat");
+        await SubmitVote(Animal.Cat);
     }
 
-    private async Task SubmitVote(string animal)
+    private async Task SubmitVote(Animal animal)
     {
         if (_isSubmitting)
         {
@@ -33,7 +34,7 @@
         {
             _isSubmitting = true;
             StateHasChanged();
-            await Http.PostAsync($"api/vote/{animal}", JsonContent.Create(animal));
+            await Http.PostAsJsonAsync("api/vote", new VoteRequest { Animal = animal });
         }
         finally
         {

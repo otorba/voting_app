@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="../VotingApp/VotingApp.csproj"/>
+        <ProjectReference Include="../VotingApp.Shared/VotingApp.Shared.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

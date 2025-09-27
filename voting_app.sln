@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+#
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingApp", "VotingApp\VotingApp.csproj", "{D387D9C4-F831-47CE-B141-72EBD0B3F858}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{3706D9F8-F74F-48B4-9F3D-25725564528A}"
@@ -8,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingResultApp", "VotingResultApp\VotingResultApp.csproj", "{059DF004-E22B-4479-B3DE-ED68C625A289}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingApp.Server", "VotingApp.Server\VotingApp.Server.csproj", "{305DDF42-BBB6-4E39-8050-84CF730579AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingApp.Shared", "VotingApp.Shared\VotingApp.Shared.csproj", "{65EB85FC-677C-43E7-B142-6A7F597806B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,5 +33,9 @@ Global
 		{305DDF42-BBB6-4E39-8050-84CF730579AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{305DDF42-BBB6-4E39-8050-84CF730579AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{305DDF42-BBB6-4E39-8050-84CF730579AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65EB85FC-677C-43E7-B142-6A7F597806B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65EB85FC-677C-43E7-B142-6A7F597806B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65EB85FC-677C-43E7-B142-6A7F597806B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65EB85FC-677C-43E7-B142-6A7F597806B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

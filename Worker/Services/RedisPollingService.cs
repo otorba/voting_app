@@ -1,11 +1,13 @@
+using System.Text.Json;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using VotingApp.Shared;
 
 namespace Worker.Services;
 
 public sealed class RedisPollingService(
   IConnectionMultiplexer connection,
-  IOptionsMonitor<RedisOptions> optionsMonitor,
+  IOptionsMonitor<RedisOptions> redisOptions,
   ILogger<RedisPollingService> logger)
   : BackgroundService
 {
@@ -15,7 +17,7 @@ public sealed class RedisPollingService(
     {
       while (!stoppingToken.IsCancellationRequested)
       {
-        var options = optionsMonitor.CurrentValue;
+        var options = redisOptions.CurrentValue;
         await FetchFromRedisAsync(options).ConfigureAwait(continueOnCapturedContext: false);
 
         var delay = GetInterval(options);
@@ -30,7 +32,8 @@ public sealed class RedisPollingService(
 
   private async Task FetchFromRedisAsync(RedisOptions options)
   {
-    if (string.IsNullOrWhiteSpace(options.Key))
+    var redisKey = options.Key;
+    if (string.IsNullOrWhiteSpace(redisKey))
     {
       logger.LogWarning(message: "Redis key is not configured; skipping fetch.");
       return;
@@ -39,30 +42,55 @@ public sealed class RedisPollingService(
     try
     {
       var db = connection.GetDatabase();
-      var value = await db.StringGetAsync(options.Key).ConfigureAwait(continueOnCapturedContext: false);
+      var entries = await db.ListRightPopAsync(redisKey, count: 50).ConfigureAwait(continueOnCapturedContext: false);
+      if (entries is null)
+      {
+        logger.LogInformation(message: "No entries found for '{Key}'.", redisKey);
+        return;
+      }
 
-      if (value.HasValue)
-        logger.LogInformation(message: "Fetched '{Key}' from Redis with value: {Value}", options.Key, value.ToString());
-      else
-        logger.LogInformation(message: "Key '{Key}' is missing in Redis.", options.Key);
+      foreach (var entry in entries)
+        ProcessEntry(redisKey, entry);
     }
     catch (RedisConnectionException ex)
     {
-      logger.LogError(ex, message: "Failed to fetch '{Key}' due to a Redis connection error.", options.Key);
+      logger.LogError(ex, message: "Failed to fetch '{Key}' due to a Redis connection error.", redisKey);
     }
     catch (RedisTimeoutException ex)
     {
-      logger.LogError(ex, message: "Timed out fetching '{Key}' from Redis.", options.Key);
+      logger.LogError(ex, message: "Timed out fetching '{Key}' from Redis.", redisKey);
     }
     catch (Exception ex)
     {
-      logger.LogError(ex, message: "Unexpected error while fetching '{Key}' from Redis.", options.Key);
+      logger.LogError(ex, message: "Unexpected error while fetching '{Key}' from Redis.", redisKey);
     }
   }
 
-  private static TimeSpan GetInterval(RedisOptions options)
+  private void ProcessEntry(string redisKey, RedisValue entry)
   {
-    var seconds = Math.Max(options.PollingIntervalSeconds, val2: 1);
+    if (entry.IsNullOrEmpty)
+    {
+      logger.LogWarning(message: "Received empty payload for '{Key}'; skipping entry.", redisKey);
+      return;
+    }
+
+    Vote? vote;
+    try
+    {
+      vote = JsonSerializer.Deserialize<Vote>(entry!);
+    }
+    catch (JsonException ex)
+    {
+      logger.LogError(ex, message: "Failed to deserialize payload for '{Key}'.", redisKey);
+      return;
+    }
+
+    logger.LogInformation(message: "Fetched vote for '{Animal}' at {VotedAt}.", vote?.Animal, vote?.VotedAt);
+  }
+
+  private static TimeSpan GetInterval(RedisOptions redisOptions)
+  {
+    var seconds = Math.Max(redisOptions.PollingIntervalSeconds, val2: 1);
 
     return TimeSpan.FromSeconds(seconds);
   }

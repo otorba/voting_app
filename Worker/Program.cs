@@ -14,10 +14,12 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     : ConnectionMultiplexer.Connect(options.ConnectionString);
 });
 
+builder.Services.AddHealthChecks();
 builder.Services.AddHostedService<RedisPollingService>();
 
 var app = builder.Build();
 
+app.MapHealthChecks(pattern: "/healthz");
 app.MapGet(pattern: "/", () => Results.Ok(new { Status = "Worker ready" }));
 
 app.Run();

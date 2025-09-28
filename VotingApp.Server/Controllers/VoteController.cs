@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
@@ -14,35 +15,20 @@ public class VoteController(
   ILogger<VoteController> logger) : ControllerBase
 {
   [HttpPost]
-  public async Task<IActionResult> PostVote([FromBody] VoteRequest? request)
+  public async Task<IActionResult> PostVote([FromBody] VoteRequest request)
   {
-    if (request is null)
-      return BadRequest(new { error = "Request body is required." });
-
-    if (!TryNormalizeAnimal(request.Animal, out var normalizedAnimal))
-      return BadRequest(new { error = "Animal must be 'dog' or 'cat'." });
-
     var options = redisOptions.Value;
     var key = string.IsNullOrWhiteSpace(options.Key) ? "votes" : options.Key;
 
     var db = connection.GetDatabase();
 
-    await db.HashIncrementAsync(key, normalizedAnimal, value: 1).ConfigureAwait(continueOnCapturedContext: false);
+    var vote = new Vote { Animal = request.Animal, VotedAt = DateTime.UtcNow };
+    var serializedVote = JsonSerializer.Serialize(vote);
 
-    logger.LogInformation(message: "Recorded vote for {Animal}", normalizedAnimal);
+    await db.ListRightPushAsync(key, serializedVote).ConfigureAwait(continueOnCapturedContext: false);
 
-    return Accepted($"/api/Vote/{normalizedAnimal}");
-  }
+    logger.LogInformation(message: "Recorded vote for '{Animal}' at {VotedAt}.", vote.Animal, vote.VotedAt);
 
-  private static bool TryNormalizeAnimal(Animal animal, out string normalized)
-  {
-    normalized = animal switch
-    {
-      Animal.Dog => "dog",
-      Animal.Cat => "cat",
-      var _ => string.Empty,
-    };
-
-    return normalized.Length > 0;
+    return Ok();
   }
 }

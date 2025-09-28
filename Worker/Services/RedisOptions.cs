@@ -2,7 +2,7 @@ namespace Worker.Services;
 
 public class RedisOptions
 {
-  public string ConnectionString { get; set; } = string.Empty;
-  public int PollingIntervalSeconds { get; set; } = 30;
-  public string Key { get; set; } = string.Empty;
+  public string ConnectionString { get; init; } = string.Empty;
+  public int PollingIntervalSeconds { get; init; } = 2;
+  public string Key { get; init; } = string.Empty;
 }

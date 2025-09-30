@@ -25,6 +25,11 @@ spec:
               value: "votes"
             - name: Redis__PollingIntervalSeconds
               value: "2"
+            - name: POSTGRES_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_CONNECTION_STRING
           readinessProbe:
             httpGet:
               path: /healthz

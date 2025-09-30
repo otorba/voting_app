@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using Worker.DB;
 using Worker.Services;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -14,8 +15,10 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
     : ConnectionMultiplexer.Connect(options.ConnectionString);
 });
 
+builder.Services.AddDbContextFactory<VoteContext>();
+
 builder.Services.AddHealthChecks();
-builder.Services.AddHostedService<RedisPollingService>();
+builder.Services.AddHostedService<PollingService>();
 
 var app = builder.Build();
 

@@ -8,7 +8,7 @@ using Worker.DB;
 namespace Worker.Services;
 
 public sealed class PollingService(
-  IConnectionMultiplexer connection,
+  IConnectionMultiplexer redisConnection,
   IOptionsMonitor<RedisOptions> redisOptions,
   IDbContextFactory<VoteContext> dbContextFactory,
   ILogger<PollingService> logger)
@@ -21,7 +21,7 @@ public sealed class PollingService(
       while (!stoppingToken.IsCancellationRequested)
       {
         var options = redisOptions.CurrentValue;
-        await FetchFromRedisAsync(options, stoppingToken).ConfigureAwait(continueOnCapturedContext: false);
+        await ProcessRedisBatchAsync(options, stoppingToken).ConfigureAwait(continueOnCapturedContext: false);
 
         var delay = GetInterval(options);
         await Task.Delay(delay, stoppingToken).ConfigureAwait(continueOnCapturedContext: false);
@@ -33,7 +33,7 @@ public sealed class PollingService(
     }
   }
 
-  private async Task FetchFromRedisAsync(RedisOptions options, CancellationToken stoppingToken)
+  private async Task ProcessRedisBatchAsync(RedisOptions options, CancellationToken stoppingToken)
   {
     var redisKey = options.Key;
     if (string.IsNullOrWhiteSpace(redisKey))
@@ -44,9 +44,9 @@ public sealed class PollingService(
 
     try
     {
-      var db = connection.GetDatabase();
-      var entries = await db.ListRightPopAsync(redisKey, count: 50).ConfigureAwait(continueOnCapturedContext: false);
-      if (entries is null || entries.Length == 0)
+      var db = redisConnection.GetDatabase();
+      var batch = await db.ListRightPopAsync(redisKey, count: 50).ConfigureAwait(continueOnCapturedContext: false);
+      if (batch is null || batch.Length == 0)
       {
         logger.LogInformation(message: "No entries found for '{Key}'.", redisKey);
         return;
@@ -57,9 +57,9 @@ public sealed class PollingService(
 
       var hasChanges = false;
 
-      foreach (var entry in entries)
+      foreach (var entry in batch)
       {
-        if (!TryQueueVote(redisKey, entry, dbContext))
+        if (!TryTrackVote(redisKey, entry, dbContext))
           continue;
 
         hasChanges = true;
@@ -91,7 +91,7 @@ public sealed class PollingService(
     }
   }
 
-  private bool TryQueueVote(string redisKey, RedisValue entry, VoteContext dbContext)
+  private bool TryTrackVote(string redisKey, RedisValue entry, VoteContext dbContext)
   {
     if (entry.IsNullOrEmpty)
     {

@@ -11,4 +11,10 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.2"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="../VotingResults.Client/VotingResults.Client.csproj"/>
+        <ProjectReference Include="../VotingResults.Shared/VotingResults.Shared.csproj"/>
+    </ItemGroup>
+
+
 </Project>

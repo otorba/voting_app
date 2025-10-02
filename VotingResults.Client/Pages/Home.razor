@@ -1,3 +1,52 @@
 @page "/"
+@inject ResultsHubClient HubClient
+@implements IDisposable
 
 <PageTitle>Voting Results</PageTitle>
+
+<h1>Voting Results</h1>
+
+<p>@_statusMessage</p>
+
+@if (_lastUpdated is not null)
+{
+    <p>Last update received at @_lastUpdated.Value.ToLocalTime().ToString("T")</p>
+}
+
+@code {
+    private int _updateCount;
+    private DateTimeOffset? _lastUpdated;
+    private string _statusMessage = "Connecting to live updates...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        HubClient.ResultsChanged += OnResultsChangedAsync;
+
+        try
+        {
+            await HubClient.EnsureConnectedAsync();
+            _statusMessage = "Listening for live result updates.";
+        }
+        catch (Exception ex)
+        {
+            _statusMessage = $"Unable to connect to live updates: {ex.Message}";
+        }
+    }
+
+    private Task OnResultsChangedAsync()
+    {
+        _updateCount++;
+        _lastUpdated = DateTimeOffset.Now;
+        _statusMessage = _updateCount == 1
+            ? "Received 1 update."
+            : $"Received {_updateCount} updates.";
+
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        HubClient.ResultsChanged -= OnResultsChangedAsync;
+    }
+
+}

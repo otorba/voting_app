@@ -10,12 +10,13 @@
 
 @if (_lastUpdated is not null)
 {
-    <p>Last update received at @_lastUpdated.Value.ToLocalTime().ToString("T")</p>
+    <p>Last update received at @_lastUpdated.Value.ToLocalTime().ToString("T") (server counter: @_lastServerCounter)</p>
 }
 
 @code {
     private int _updateCount;
     private DateTimeOffset? _lastUpdated;
+    private int _lastServerCounter;
     private string _statusMessage = "Connecting to live updates...";
 
     protected override async Task OnInitializedAsync()
@@ -33,9 +34,10 @@
         }
     }
 
-    private Task OnResultsChangedAsync()
+    private Task OnResultsChangedAsync(int serverCounter)
     {
         _updateCount++;
+        _lastServerCounter = serverCounter;
         _lastUpdated = DateTimeOffset.Now;
         _statusMessage = _updateCount == 1
             ? "Received 1 update."

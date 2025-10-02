@@ -15,7 +15,7 @@ public sealed class ResultsHubClient : IAsyncDisposable
       .WithAutomaticReconnect()
       .Build();
 
-    _connection.On(methodName: "ResultsChanged", () => NotifyResultsChangedAsync());
+    _connection.On<int>(methodName: "ResultsChanged", count => NotifyResultsChangedAsync(count));
   }
 
   public async ValueTask DisposeAsync()
@@ -24,7 +24,7 @@ public sealed class ResultsHubClient : IAsyncDisposable
     await _connection.DisposeAsync();
   }
 
-  public event Func<Task>? ResultsChanged;
+  public event Func<int, Task>? ResultsChanged;
 
   public async Task EnsureConnectedAsync(CancellationToken cancellationToken = default)
   {
@@ -37,5 +37,5 @@ public sealed class ResultsHubClient : IAsyncDisposable
     _started = true;
   }
 
-  private Task NotifyResultsChangedAsync() => ResultsChanged is { } handler ? handler.Invoke() : Task.CompletedTask;
+  private Task NotifyResultsChangedAsync(int count) => ResultsChanged is { } handler ? handler.Invoke(count) : Task.CompletedTask;
 }

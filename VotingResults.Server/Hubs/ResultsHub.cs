@@ -4,5 +4,5 @@ namespace VotingResults.Server.Hubs;
 
 public class ResultsHub : Hub
 {
-  public Task NotifyResultsChangedAsync() => Clients.All.SendAsync(method: "ResultsChanged");
+  public Task NotifyResultsChangedAsync(int serverCounter) => Clients.All.SendAsync(method: "ResultsChanged", serverCounter);
 }

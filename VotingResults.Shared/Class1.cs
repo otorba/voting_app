@@ -1,0 +1,3 @@
+﻿namespace VotingResults.Shared;
+
+public class Class1 { }

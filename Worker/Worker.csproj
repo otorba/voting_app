@@ -10,7 +10,6 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
         <PackageReference Include="StackExchange.Redis" Version="2.8.12"/>
     </ItemGroup>
 
@@ -21,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Voting.Storage\Voting.Storage.csproj"/>
         <ProjectReference Include="..\VotingApp.Shared\VotingApp.Shared.csproj"/>
     </ItemGroup>
 

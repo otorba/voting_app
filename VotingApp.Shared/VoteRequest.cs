@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Voting.Shared;
 
 namespace VotingApp.Shared;
 

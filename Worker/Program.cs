@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using Worker.DB;
+using Voting.Storage;
 using Worker.Services;
 
 var builder = WebApplication.CreateSlimBuilder(args);

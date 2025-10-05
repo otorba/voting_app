@@ -2,8 +2,8 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using VotingApp.Shared;
-using Worker.DB;
+using Voting.Shared;
+using Voting.Storage;
 
 namespace Worker.Services;
 

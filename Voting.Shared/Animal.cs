@@ -1,4 +1,4 @@
-namespace VotingApp.Shared;
+namespace Voting.Shared;
 
 public enum Animal
 {

@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingResults.Server", "Vot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VotingResults.Shared", "VotingResults.Shared\VotingResults.Shared.csproj", "{7B7C752D-B550-42DF-B92F-03F61D326D23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voting.Storage", "Voting.Storage\Voting.Storage.csproj", "{1BD3018E-482B-4268-88F6-7D6E1801E27A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voting.Shared", "Voting.Shared\Voting.Shared.csproj", "{AA94992A-424B-4842-8FF6-0943BAC03058}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,5 +53,13 @@ Global
 		{7B7C752D-B550-42DF-B92F-03F61D326D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B7C752D-B550-42DF-B92F-03F61D326D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B7C752D-B550-42DF-B92F-03F61D326D23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BD3018E-482B-4268-88F6-7D6E1801E27A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BD3018E-482B-4268-88F6-7D6E1801E27A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BD3018E-482B-4268-88F6-7D6E1801E27A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BD3018E-482B-4268-88F6-7D6E1801E27A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA94992A-424B-4842-8FF6-0943BAC03058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA94992A-424B-4842-8FF6-0943BAC03058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA94992A-424B-4842-8FF6-0943BAC03058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA94992A-424B-4842-8FF6-0943BAC03058}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

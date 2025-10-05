@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using Voting.Shared;
 using VotingApp.Server.Options;
 using VotingApp.Shared;
 

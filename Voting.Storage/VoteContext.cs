@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using VotingApp.Shared;
+using Voting.Shared;
 
-namespace Worker.DB;
+namespace Voting.Storage;
 
 public class VoteContext : DbContext
 {

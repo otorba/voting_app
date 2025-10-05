@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace VotingApp.Shared;
+namespace Voting.Shared;
 
 public class Vote
 {

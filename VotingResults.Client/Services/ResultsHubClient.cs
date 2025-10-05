@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using VotingResults.Shared;
 
 namespace VotingResults.Client.Services;
 
@@ -15,7 +16,7 @@ public sealed class ResultsHubClient : IAsyncDisposable
       .WithAutomaticReconnect()
       .Build();
 
-    _connection.On<int>(methodName: "ResultsChanged", count => NotifyResultsChangedAsync(count));
+    _connection.On<VotingResultsDto>(methodName: "ResultsChanged", votingResults => NotifyResultsChangedAsync(votingResults));
   }
 
   public async ValueTask DisposeAsync()
@@ -24,7 +25,7 @@ public sealed class ResultsHubClient : IAsyncDisposable
     await _connection.DisposeAsync();
   }
 
-  public event Func<int, Task>? ResultsChanged;
+  public event Func<VotingResultsDto, Task>? ResultsChanged;
 
   public async Task EnsureConnectedAsync(CancellationToken cancellationToken = default)
   {
@@ -37,5 +38,6 @@ public sealed class ResultsHubClient : IAsyncDisposable
     _started = true;
   }
 
-  private Task NotifyResultsChangedAsync(int count) => ResultsChanged is { } handler ? handler.Invoke(count) : Task.CompletedTask;
+  private Task NotifyResultsChangedAsync(VotingResultsDto votingResults) =>
+    ResultsChanged is { } handler ? handler.Invoke(votingResults) : Task.CompletedTask;
 }

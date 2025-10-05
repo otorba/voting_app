@@ -1,5 +1,7 @@
 @page "/"
 @inject ResultsHubClient HubClient
+@using Voting.Shared
+@using VotingResults.Shared
 @implements IDisposable
 
 <PageTitle>Voting Results</PageTitle>
@@ -10,13 +12,22 @@
 
 @if (_lastUpdated is not null)
 {
-    <p>Last update received at @_lastUpdated.Value.ToLocalTime().ToString("T") (server counter: @_lastServerCounter)</p>
+    <p>Last update received at @_lastUpdated.Value.ToLocalTime().ToString("T")</p>
+    @if (_results is not null)
+    {
+        <ul>
+            @foreach (var result in _results)
+            {
+                <li>@result.Key: @result.Value votes</li>
+            }
+        </ul>
+    }
 }
 
 @code {
     private int _updateCount;
     private DateTimeOffset? _lastUpdated;
-    private int _lastServerCounter;
+    private Dictionary<Animal, int>? _results;
     private string _statusMessage = "Connecting to live updates...";
 
     protected override async Task OnInitializedAsync()
@@ -34,10 +45,10 @@
         }
     }
 
-    private Task OnResultsChangedAsync(int serverCounter)
+    private Task OnResultsChangedAsync(VotingResultsDto votingResults)
     {
         _updateCount++;
-        _lastServerCounter = serverCounter;
+        _results = votingResults.Results;
         _lastUpdated = DateTimeOffset.Now;
         _statusMessage = _updateCount == 1
             ? "Received 1 update."

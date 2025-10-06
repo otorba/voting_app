@@ -8,12 +8,12 @@ builder.Services.AddHealthChecks();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ResultsBroadcastService>();
 
+builder.Services.AddDbContextFactory<VoteContext>();
+
 var app = builder.Build();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
-
-builder.Services.AddDbContextFactory<VoteContext>();
 
 app.MapHealthChecks(pattern: "/healthz");
 app.MapHub<ResultsHub>(pattern: "/hubs/results");

@@ -4,6 +4,7 @@ using Voting.Shared;
 using Voting.Storage;
 using VotingResults.Server.Hubs;
 using VotingResults.Shared;
+using VotingResults.Shared.Extensions;
 
 namespace VotingResults.Server.Services;
 
@@ -21,7 +22,7 @@ public sealed class ResultsBroadcastService(
     while (!stoppingToken.IsCancellationRequested)
     {
       var results = await GetResults();
-      if (results.SequenceEqual(_previousResults))
+      if (results.ContentEquals(_previousResults))
       {
         await WaitInterval(stoppingToken);
         continue;

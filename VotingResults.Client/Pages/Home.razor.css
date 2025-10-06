@@ -1,71 +1,53 @@
-.results-wrapper {
+.voting-container {
     display: flex;
-    flex: 1;
-    width: 100%;
-    min-height: 70vh;
-    border-radius: 1rem;
-    overflow: hidden;
-    box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.15);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
 }
 
-.vote-panel {
+.voting-area {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 2rem 1rem;
-    color: #f8fafc;
-    text-align: center;
-    transition: flex 0.35s ease-in-out;
+    align-items: center;
+    color: white;
+    transition: flex 0.5s ease;
+    padding: 20px;
 }
 
-.vote-panel.dog {
-    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+.cat-area {
+    background-color: #28a745;
 }
 
-.vote-panel.cat {
-    background: linear-gradient(135deg, #16a34a, #22c55e);
+.dog-area {
+    background-color: #007bff;
 }
 
-.panel-title {
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 700;
-    margin: 0;
+.animal-title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 .vote-count {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 600;
+    font-size: 3rem;
+    font-weight: 300;
 }
 
-.vote-label {
-    font-size: clamp(0.9rem, 2.2vw, 1.2rem);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.85;
-}
-
-.status-message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 60vh;
-    font-size: 1.25rem;
-    color: #1f2937;
-}
-
-.status-message.error {
-    color: #b91c1c;
-}
-
-@media (max-width: 768px) {
-    .results-wrapper {
-        flex-direction: column;
-        min-height: 60vh;
-    }
-
-    .vote-panel {
-        min-height: 30vh;
-    }
+.status-overlay {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    z-index: 1000;
 }

@@ -6,22 +6,49 @@
 
 <PageTitle>Voting Results</PageTitle>
 
-<h1>Voting Results</h1>
-
-<p>@_statusMessage</p>
-
-@if (_lastUpdated is not null)
+@if (_results is not null)
 {
-    <p>Last update received at @_lastUpdated.Value.ToLocalTime().ToString("T")</p>
-    @if (_results is not null)
-    {
-        <ul>
-            @foreach (var result in _results)
-            {
-                <li>@result.Key: @result.Value votes</li>
-            }
-        </ul>
-    }
+    var catVotes = _results.ContainsKey(Animal.Cat) ? _results[Animal.Cat] : 0;
+    var dogVotes = _results.ContainsKey(Animal.Dog) ? _results[Animal.Dog] : 0;
+    var totalVotes = catVotes + dogVotes;
+
+    var catFlex = totalVotes > 0 ? catVotes : 1;
+    var dogFlex = totalVotes > 0 ? dogVotes : 1;
+
+    <div class="voting-container">
+        <div class="voting-area cat-area" style="flex: @catFlex;">
+            <div class="animal-title">Cat</div>
+            <div class="vote-count">@catVotes votes</div>
+        </div>
+        <div class="voting-area dog-area" style="flex: @dogFlex;">
+            <div class="animal-title">Dog</div>
+            <div class="vote-count">@dogVotes votes</div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="voting-container">
+        <div class="voting-area cat-area" style="flex: 1;">
+            <div class="animal-title">Cat</div>
+            <div class="vote-count">0 votes</div>
+        </div>
+        <div class="voting-area dog-area" style="flex: 1;">
+            <div class="animal-title">Dog</div>
+            <div class="vote-count">0 votes</div>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(_statusMessage))
+{
+    <div class="status-overlay">
+        @_statusMessage
+        @if (_lastUpdated is not null)
+        {
+            <span> | Last update: @_lastUpdated.Value.ToLocalTime().ToString("T")</span>
+        }
+    </div>
 }
 
 @code {

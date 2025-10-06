@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,12 @@
         <ProjectReference Include="../VotingResults.Client/VotingResults.Client.csproj"/>
         <ProjectReference Include="../VotingResults.Shared/VotingResults.Shared.csproj"/>
         <ProjectReference Include="..\Voting.Storage\Voting.Storage.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
 

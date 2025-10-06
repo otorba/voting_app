@@ -17,7 +17,7 @@ spec:
       containers:
         - name: votingresults
           image: votingresults:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080
           env:

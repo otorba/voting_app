@@ -1,3 +1,4 @@
+using Voting.Storage;
 using VotingResults.Server.Hubs;
 using VotingResults.Server.Services;
 
@@ -11,6 +12,8 @@ var app = builder.Build();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+
+builder.Services.AddDbContextFactory<VoteContext>();
 
 app.MapHealthChecks(pattern: "/healthz");
 app.MapHub<ResultsHub>(pattern: "/hubs/results");

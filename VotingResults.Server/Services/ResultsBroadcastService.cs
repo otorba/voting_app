@@ -10,7 +10,7 @@ namespace VotingResults.Server.Services;
 
 public sealed class ResultsBroadcastService(
   IHubContext<ResultsHub> hubContext,
-  VoteContext context,
+  IDbContextFactory<VoteContext> dbContextFactory,
   ILogger<ResultsBroadcastService> logger)
   : BackgroundService
 {
@@ -47,6 +47,7 @@ public sealed class ResultsBroadcastService(
 
   private async Task<Dictionary<Animal, int>> GetResults()
   {
+    await using var context = await dbContextFactory.CreateDbContextAsync();
     var results = await context.Votes
       .GroupBy(v => v.Animal)
       .Select(g => new { Animal = g.Key, Count = g.Count() })

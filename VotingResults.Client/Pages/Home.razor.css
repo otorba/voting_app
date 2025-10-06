@@ -1,53 +1,87 @@
-.voting-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    top: 0;
-    left: 0;
+:root {
+    --cat: #28a745;
+    --cat-hi: #2ecb6c;
+    --dog: #007bff;
+    --dog-hi: #33a1ff;
+    --shadow: rgba(0, 0, 0, 0.25);
+}
+
+html, body {
+    height: 100%;
     margin: 0;
-    padding: 0;
+}
+
+.voting-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    height: 100dvh;
+    width: 100vw;
+    gap: 6px; /* visible divider */
+    background: #fff; /* divider color */
 }
 
 .voting-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    transition: flex 0.5s ease;
+    /* Basis 0 ensures pure proportional sizing; inline flex-grow sets the ratio */
+    flex: 1 1 0%;
+    min-width: 0;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    transition: flex-grow 0.5s ease;
     padding: 20px;
+    text-align: center;
 }
 
 .cat-area {
-    background-color: #28a745;
+    background: linear-gradient(135deg, var(--cat) 0%, var(--cat-hi) 100%);
 }
 
 .dog-area {
-    background-color: #007bff;
+    background: linear-gradient(135deg, var(--dog) 0%, var(--dog-hi) 100%);
 }
 
 .animal-title {
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 20px;
+    font-size: clamp(2.5rem, 8vw, 7rem);
+    font-weight: 800;
+    letter-spacing: .03em;
     text-transform: uppercase;
+    text-shadow: 0 2px 8px var(--shadow);
+    line-height: 1.05;
 }
 
 .vote-count {
-    font-size: 3rem;
+    margin-top: .4em;
+    font-size: clamp(1.25rem, 4.5vw, 4rem);
     font-weight: 300;
+    text-shadow: 0 1px 4px var(--shadow);
+    opacity: .95;
+}
+
+.vote-count .suffix {
+    opacity: .85;
+}
+
+.percent {
+    margin-left: .25em;
+    opacity: .9;
 }
 
 .status-overlay {
     position: fixed;
-    top: 10px;
     left: 50%;
+    bottom: 18px;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, .65);
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 0.9rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: .95rem;
     z-index: 1000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .voting-area {
+        transition: none;
+    }
 }

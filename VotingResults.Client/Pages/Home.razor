@@ -6,43 +6,52 @@
 
 <PageTitle>Voting Results</PageTitle>
 
-@if (_results is not null)
-{
-    var catVotes = _results.ContainsKey(Animal.Cat) ? _results[Animal.Cat] : 0;
-    var dogVotes = _results.ContainsKey(Animal.Dog) ? _results[Animal.Dog] : 0;
+@{
+    var catVotes = GetVotes(Animal.Cat);
+    var dogVotes = GetVotes(Animal.Dog);
     var totalVotes = catVotes + dogVotes;
 
-    var catFlex = totalVotes > 0 ? catVotes : 1;
-    var dogFlex = totalVotes > 0 ? dogVotes : 1;
+    // Grow factors: exact proportions when we have data, 1:1 before data arrives
+    var catGrow = totalVotes > 0 ? catVotes : 1;
+    var dogGrow = totalVotes > 0 ? dogVotes : 1;
 
-    <div class="voting-container">
-        <div class="voting-area cat-area" style="flex: @catFlex;">
-            <div class="animal-title">Cat</div>
-            <div class="vote-count">@catVotes votes</div>
-        </div>
-        <div class="voting-area dog-area" style="flex: @dogFlex;">
-            <div class="animal-title">Dog</div>
-            <div class="vote-count">@dogVotes votes</div>
-        </div>
-    </div>
+    var catPct = totalVotes > 0 ? $"{catVotes * 100.0 / totalVotes:0}%" : null;
+    var dogPct = totalVotes > 0 ? $"{dogVotes * 100.0 / totalVotes:0}%" : null;
+
+    var aria = $"Cat {catVotes} votes. Dog {dogVotes} votes.";
 }
-else
-{
-    <div class="voting-container">
-        <div class="voting-area cat-area" style="flex: 1;">
+
+<div class="voting-container" role="img" aria-label="@aria">
+    <section class="voting-area cat-area" style="flex-grow:@catGrow;">
+        <div class="content">
             <div class="animal-title">Cat</div>
-            <div class="vote-count">0 votes</div>
+            <div class="vote-count">
+                @catVotes <span class="suffix">votes</span>
+                @if (catPct is not null)
+                {
+                    <span class="percent">(@catPct)</span>
+                }
+            </div>
         </div>
-        <div class="voting-area dog-area" style="flex: 1;">
+    </section>
+
+    <section class="voting-area dog-area" style="flex-grow:@dogGrow;">
+        <div class="content">
             <div class="animal-title">Dog</div>
-            <div class="vote-count">0 votes</div>
+            <div class="vote-count">
+                @dogVotes <span class="suffix">votes</span>
+                @if (dogPct is not null)
+                {
+                    <span class="percent">(@dogPct)</span>
+                }
+            </div>
         </div>
-    </div>
-}
+    </section>
+</div>
 
 @if (!string.IsNullOrEmpty(_statusMessage))
 {
-    <div class="status-overlay">
+    <div class="status-overlay" aria-live="polite">
         @_statusMessage
         @if (_lastUpdated is not null)
         {
@@ -84,9 +93,14 @@ else
         return InvokeAsync(StateHasChanged);
     }
 
+    private int GetVotes(Animal animal)
+    {
+        if (_results is null) return 0;
+        return _results.TryGetValue(animal, out var v) ? v : 0;
+    }
+
     public void Dispose()
     {
         HubClient.ResultsChanged -= OnResultsChangedAsync;
     }
-
 }

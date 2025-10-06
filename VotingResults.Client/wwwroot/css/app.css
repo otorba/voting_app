@@ -1,3 +1,11 @@
+:root {
+    --cat: #28a745;
+    --cat-hi: #2ecb6c;
+    --dog: #007bff;
+    --dog-hi: #33a1ff;
+    --shadow: rgba(0, 0, 0, .25);
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

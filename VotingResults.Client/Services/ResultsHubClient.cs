@@ -16,7 +16,7 @@ public sealed class ResultsHubClient : IAsyncDisposable
       .WithAutomaticReconnect()
       .Build();
 
-    _connection.On<VotingResultsDto>(methodName: "ResultsChanged", votingResults => NotifyResultsChangedAsync(votingResults));
+    _connection.On<VotingResultsDto>(methodName: "ResultsChanged", NotifyResultsChangedAsync);
   }
 
   public async ValueTask DisposeAsync()
@@ -37,6 +37,9 @@ public sealed class ResultsHubClient : IAsyncDisposable
 
     _started = true;
   }
+
+  public Task<VotingResultsDto> GetCurrentResultsAsync(CancellationToken cancellationToken = default) =>
+    _connection.InvokeAsync<VotingResultsDto>(methodName: "GetCurrentResults", cancellationToken);
 
   private Task NotifyResultsChangedAsync(VotingResultsDto votingResults) =>
     ResultsChanged is { } handler ? handler.Invoke(votingResults) : Task.CompletedTask;

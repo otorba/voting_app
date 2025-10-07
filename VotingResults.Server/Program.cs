@@ -6,9 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
 builder.Services.AddSignalR();
-builder.Services.AddHostedService<ResultsBroadcastService>();
-
 builder.Services.AddDbContextFactory<VoteContext>();
+builder.Services.AddSingleton<ResultsSnapshotService>();
+builder.Services.AddHostedService<ResultsBroadcastService>();
 
 var app = builder.Build();
 

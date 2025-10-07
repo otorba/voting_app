@@ -74,6 +74,9 @@
         {
             await HubClient.EnsureConnectedAsync();
             _statusMessage = "Listening for live result updates.";
+
+            var currentResults = await HubClient.GetCurrentResultsAsync();
+            await OnResultsChangedAsync(currentResults);
         }
         catch (Exception ex)
         {

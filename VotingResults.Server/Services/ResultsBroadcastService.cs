@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using Voting.Shared;
-using Voting.Storage;
 using VotingResults.Server.Hubs;
 using VotingResults.Shared;
 using VotingResults.Shared.Extensions;
@@ -10,7 +8,7 @@ namespace VotingResults.Server.Services;
 
 public sealed class ResultsBroadcastService(
   IHubContext<ResultsHub> hubContext,
-  IDbContextFactory<VoteContext> dbContextFactory,
+  ResultsSnapshotService snapshotService,
   ILogger<ResultsBroadcastService> logger)
   : BackgroundService
 {
@@ -21,7 +19,7 @@ public sealed class ResultsBroadcastService(
   {
     while (!stoppingToken.IsCancellationRequested)
     {
-      var results = await GetResults();
+      var results = await snapshotService.GetResultsAsync(stoppingToken);
       if (results.ContentEquals(_previousResults))
       {
         await WaitInterval(stoppingToken);
@@ -43,17 +41,6 @@ public sealed class ResultsBroadcastService(
 
       await WaitInterval(stoppingToken);
     }
-  }
-
-  private async Task<Dictionary<Animal, int>> GetResults()
-  {
-    await using var context = await dbContextFactory.CreateDbContextAsync();
-    var results = await context.Votes
-      .GroupBy(v => v.Animal)
-      .Select(g => new { Animal = g.Key, Count = g.Count() })
-      .ToDictionaryAsync(k => k.Animal, v => v.Count, CancellationToken.None);
-
-    return results;
   }
 
   private static async Task WaitInterval(CancellationToken stoppingToken)

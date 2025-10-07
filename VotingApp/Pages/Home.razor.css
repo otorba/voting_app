@@ -11,4 +11,29 @@
     width: 200px;
     height: 60px;
     font-size: 18px;
+    border: 0;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.voting-button:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.voting-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
+}
+
+.dog-button {
+    background: linear-gradient(135deg, #007bff 0%, #33a1ff 100%);
+}
+
+.cat-button {
+    background: linear-gradient(135deg, #28a745 0%, #2ecb6c 100%);
 }
